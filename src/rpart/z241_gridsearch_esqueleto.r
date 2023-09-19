@@ -11,7 +11,7 @@ require("parallel")
 
 PARAM <- list()
 # reemplazar por las propias semillas
-PARAM$semillas <- c(102191, 200177, 410551, 552581, 892237)
+PARAM$semillas <- c(400067, 400237, 400297, 400307, 400681)
 
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
@@ -89,7 +89,7 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
 #------------------------------------------------------------------------------
 
 # Aqui se debe poner la carpeta de la computadora local
-setwd("X:\\gdrive\\ITBA2023B\\") # Establezco el Working Directory
+setwd("C:\\Users\\matia\\OneDrive\\Desktop\\ITBA\\CD03-Mineria_de_Datos") # Establezco el Working Directory
 # cargo los datos
 
 # cargo los datos
@@ -114,27 +114,30 @@ cat(
   sep = "",
   "max_depth", "\t",
   "min_split", "\t",
+  "vcp", "\t",
+  "vmin_bucket", "\t",
   "ganancia_promedio", "\n"
 )
 
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
-  for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20, 10)) {
+for (vmax_depth in c(4, 6, 8, 10, 12)) {
+  for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20)) {
+    for (vcp in c(-1, -0.5, -0.1, -0.01, 0, 0.01, 0.1, 0.5, 1)) {
+      for (vmin_bucket in c(2, 3, 4, 5, 6, 7, 8)) {
     # notar como se agrega
 
     # vminsplit  minima cantidad de registros en un nodo para hacer el split
     param_basicos <- list(
-      "cp" = -0.5, # complejidad minima
+      "cp" = vcp, # complejidad minima
       "minsplit" = vmin_split,
-      "minbucket" = 5, # minima cantidad de registros en una hoja
+      "minbucket" = vmin_bucket, # minima cantidad de registros en una hoja
       "maxdepth" = vmax_depth
     ) # profundidad máxima del arbol
 
     # Un solo llamado, con la semilla 17
-    ganancia_promedio <- ArbolesMontecarlo(ksemillas, param_basicos)
-
+    ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas, param_basicos)
     # escribo los resultados al archivo de salida
     cat(
       file = archivo_salida,
@@ -142,7 +145,12 @@ for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
       sep = "",
       vmax_depth, "\t",
       vmin_split, "\t",
+      vcp, "\t",
+      vmin_bucket, "\t",
       ganancia_promedio, "\n"
     )
   }
+    }
+  }
 }
+
