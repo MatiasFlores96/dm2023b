@@ -7,24 +7,25 @@ require("rpart")
 require("rpart.plot")
 
 # Aqui se debe poner la carpeta de la materia de SU computadora local
-setwd("X:\\gdrive\\ITBA2023B\\") # Establezco el Working Directory
+setwd("C:\\Users\\matia\\OneDrive\\Desktop\\ITBA\\CD03-Mineria_de_Datos") # Establezco el Working Directory
 
 # cargo el dataset
 dataset <- fread("./datasets/dataset_pequeno.csv")
 
 dtrain <- dataset[foto_mes == 202107] # defino donde voy a entrenar
+#dtrain[,clase_ternaria:=sample(clase_ternaria)]
 dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
 modelo <- rpart(
-        formula = "clase_ternaria ~ .",
+        formula = "cliente_edad ~ . - numero_de_cliente - cliente_antiguedad - Visa_fechaalta -Master_fechaalta",
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
-        cp = -0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 0, # minima cantidad de registros para que se haga el split
-        minbucket = 1, # tamaño minimo de una hoja
-        maxdepth = 3
+        cp = -1, # esto significa no limitar la complejidad de los splits
+        minsplit = 1000, # minima cantidad de registros para que se haga el split
+        minbucket = 2, # tamaño minimo de una hoja
+        maxdepth = 7
 ) # profundidad maxima del arbol
 
 
@@ -63,3 +64,4 @@ fwrite(dapply[, list(numero_de_cliente, Predicted)],
         file = "./exp/KA2001/K101_001.csv",
         sep = ","
 )
+
