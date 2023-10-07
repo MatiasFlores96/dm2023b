@@ -270,7 +270,7 @@ AgregaVarRandomForest <- function(
     min.node.size = min.node.size,
     mtry = mtry,
     seed = semilla,
-    splitrule = splitrule
+    splitrule = splitrule,
     replace = replace,
     num.threads = 1
   )
