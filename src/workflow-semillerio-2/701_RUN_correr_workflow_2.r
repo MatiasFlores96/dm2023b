@@ -18,5 +18,4 @@ source("~/dm2023b/src/workflow-semillerio-2/741_TS_training_strategy_2.r")
 # ultimos pasos, muy lentos
 source("~/dm2023b/src/workflow-semillerio-2/751_HT_lightgbm_2.r")
 source("~/dm2023b/src/workflow-semillerio-2/795_ZZ_final_semillerio_2.r")
-source("~/dm2023b/src/workflow-semillerio-2/796_HB_semillerios_hibridacion_2.r")
 
